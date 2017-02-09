@@ -3,6 +3,8 @@ MAINTAINER Florian Egner <egner.florian@gmail.com>
 
 ENV PIWIK_VERSION 3.0.1
 
+RUN usermod -u 1000 www-data
+
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         zip \
@@ -69,6 +71,10 @@ RUN wget http://builds.piwik.org/piwik-${PIWIK_VERSION}.tar.gz \
 # Piwik config directory
 RUN cp -r /var/www/html/config /var/www/html/config.original/
 
+RUN rm -Rf /var/www/html/config.original
+RUN chmod +w /var/www/html/piwik.js
+RUN chown www-data:www-data /var/www/html/piwik.js
+
 VOLUME /var/www/html/config/
 
 # GeoIP database
@@ -81,8 +87,3 @@ VOLUME /var/www/html/plugins/
 COPY assets/entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["apache2-foreground"]
-
-RUN chmod a+w /var/www/html/config
-RUN rm -Rf /var/www/html/config.original
-RUN chmod +w /var/www/html/piwik.js
-RUN chown www-data:www-data /var/www/html/piwik.js
