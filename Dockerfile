@@ -1,5 +1,5 @@
 FROM php:5.6-apache
-MAINTAINER Benjamin Hutchins <ben@hutchins.co>
+MAINTAINER Florian Egner <egner.florian@gmail.com>
 
 ENV PIWIK_VERSION 3.0.1
 
