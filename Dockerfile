@@ -81,3 +81,8 @@ VOLUME /var/www/html/plugins/
 COPY assets/entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["apache2-foreground"]
+
+RUN chmod a+w /var/www/html/config
+RUN rm -Rf /var/www/html/config.original
+RUN chmod +w /var/www/html/piwik.js
+RUN chown www-data:www-data /var/www/html/piwik.js
