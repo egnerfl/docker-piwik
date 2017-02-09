@@ -1,6 +1,8 @@
 FROM php:5.6-apache
 MAINTAINER Florian Egner <egner.florian@gmail.com>
 
+USER root
+
 ENV PIWIK_VERSION 3.0.1
 
 RUN usermod -u 1000 www-data
@@ -71,10 +73,6 @@ RUN wget http://builds.piwik.org/piwik-${PIWIK_VERSION}.tar.gz \
 # Piwik config directory
 RUN cp -r /var/www/html/config /var/www/html/config.original/
 
-RUN rm -Rf /var/www/html/config.original
-RUN chmod +w /var/www/html/piwik.js
-RUN chown www-data:www-data /var/www/html/piwik.js
-
 VOLUME /var/www/html/config/
 
 # GeoIP database
@@ -87,3 +85,7 @@ VOLUME /var/www/html/plugins/
 COPY assets/entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["apache2-foreground"]
+
+RUN chmod +w /var/www/html/piwik.js
+RUN chown www-data:www-data /var/www/html/piwik.js
+RUN rm -Rf /var/www/html/config.origin
